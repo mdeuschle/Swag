@@ -12,7 +12,7 @@ class RootTableVC: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.rowHeight = 300
+        tableView.rowHeight = 260
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
