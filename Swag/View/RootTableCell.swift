@@ -12,6 +12,7 @@ class RootTableCell: UITableViewCell {
 
     @IBOutlet private weak var collectionView: UICollectionView!
 
+
     override func awakeFromNib() {
         super.awakeFromNib()
         collectionView.dataSource = self
@@ -22,6 +23,26 @@ class RootTableCell: UITableViewCell {
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.bounds.size.width - 60, height: CGFloat(260))
+    }
+
+    private func snapToCenter() {
+        let centerPoint = self.convert(self.center, to: collectionView)
+        guard let indexPath = collectionView.indexPathForItem(at: centerPoint) else {
+            return
+        }
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        print("HELLO")
+        snapToCenter()
+    }
+
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        print("DID END")
+        if !decelerate {
+            snapToCenter()
+        }
     }
 }
 
@@ -36,7 +57,8 @@ extension RootTableCell: UICollectionViewDataSource {
     }
 }
 
-extension RootTableCell: UIScrollViewDelegate {
+extension RootTableCell: UICollectionViewDelegate {
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
